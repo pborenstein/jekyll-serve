@@ -1,5 +1,36 @@
 # Jekyll in a Docker Container
 
+## What's this?
+
+A Docker image that runs a Jekyll server in the current directory.
+
+This is essentially the same as [Bret Fisher's original](https://github.com/BretFisher/jekyll-serve),
+with a a couple of differences:
+
+- The gems are installed at build time, not at run time
+  because we care much more about speed that in being
+  able to update gems. Which we never do.
+- This version works only on existing Jekyll sites.
+  Passing `-e JEKYLL_NEW=true` to the `docker run`
+  command has no effect.
+- If you pass `-e JEKYLL_CLEAN=true`,
+  the container runs `jekyll clean` before
+  running `jekyll serve`.
+- I like having `--incremental` on.
+
+Baking the gems into the image required me to
+copy the `Gemfile` and `Gemfile.lock` files
+to this build directory. Both of these names are
+in `.gitignore` because it's no one's business which
+gems you use.
+
+See the `Building the Image` comment in the `Dockerfile`.
+
+
+
+
+## Original README.md
+
 > But this has been done. Why not `docker pull jekyll/jekyll`?
 
 - I wanted defaults to be `jekyll serve` when container is run, which I use 90% of time
